@@ -52,7 +52,11 @@ export function BoardGamesApp() {
     <div className="flex h-full flex-col bg-slate-50 text-slate-900">
       <div className="min-h-0 flex-1 overflow-y-auto">
         {tab === "play" &&
-          (game ? <Play game={game} onChange={update} onFinish={finish} /> : <Setup onStart={update} />)}
+          (game ? (
+            <Play game={game} onChange={update} onFinish={finish} />
+          ) : (
+            <Setup onStart={update} />
+          ))}
         {tab === "leaderboard" && <Leaderboard history={history} onClear={clear} />}
       </div>
       <nav className="grid grid-cols-2 gap-1 border-t border-slate-200 bg-white p-1.5">

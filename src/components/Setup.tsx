@@ -72,7 +72,9 @@ export function Setup({ onStart }: { onStart: (g: Game) => void }) {
               <select
                 value={teams[i]}
                 aria-label={`Player ${i + 1} team`}
-                onChange={(e) => setTeams((t) => t.map((x, j) => (j === i ? Number(e.target.value) : x)))}
+                onChange={(e) =>
+                  setTeams((t) => t.map((x, j) => (j === i ? Number(e.target.value) : x)))
+                }
                 className="min-h-11 rounded-xl border-2 border-slate-200 bg-white px-2 text-sm font-semibold"
               >
                 {TEAM_NAMES.map((t, id) => (
@@ -108,7 +110,16 @@ export function Setup({ onStart }: { onStart: (g: Game) => void }) {
       <button
         type="button"
         disabled={!valid}
-        onClick={() => onStart(newGame(name, mode, players.map((p) => p.trim()), teams))}
+        onClick={() =>
+          onStart(
+            newGame(
+              name,
+              mode,
+              players.map((p) => p.trim()),
+              teams
+            )
+          )
+        }
         className="min-h-14 rounded-2xl bg-indigo-600 text-lg font-extrabold text-white shadow-lg transition active:scale-[0.98] disabled:opacity-40"
       >
         Start game

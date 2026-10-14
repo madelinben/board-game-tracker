@@ -1,5 +1,5 @@
 import { Skull, Trophy } from "lucide-react";
-import { type CoopResult as Result, type Game, setResult } from "../lib/game";
+import { type Game, type CoopResult as Result, setResult } from "../lib/game";
 
 const OPTIONS: { value: Exclude<Result, null>; label: string; Icon: typeof Trophy }[] = [
   { value: "won", label: "We won", Icon: Trophy },
@@ -9,7 +9,9 @@ const OPTIONS: { value: Exclude<Result, null>; label: string; Icon: typeof Troph
 export function CoopResult({ game, onChange }: { game: Game; onChange: (g: Game) => void }) {
   return (
     <div className="flex flex-col gap-3">
-      <p className="text-sm text-slate-600">{game.players.join(", ")} play together against the game.</p>
+      <p className="text-sm text-slate-600">
+        {game.players.join(", ")} play together against the game.
+      </p>
       <div className="grid grid-cols-2 gap-3">
         {OPTIONS.map(({ value, label, Icon }) => (
           <button

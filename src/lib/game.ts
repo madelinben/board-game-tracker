@@ -5,7 +5,11 @@ export type CoopResult = "won" | "lost" | null;
 export const MODES: { id: Mode; label: string; hint: string }[] = [
   { id: "highest", label: "Highest wins", hint: "Running points total. Most points wins." },
   { id: "lowest", label: "Lowest wins", hint: "Golf-style. Fewest points wins." },
-  { id: "rounds", label: "Round by round", hint: "Score table, one row per round. Most points wins." },
+  {
+    id: "rounds",
+    label: "Round by round",
+    hint: "Score table, one row per round. Most points wins.",
+  },
   { id: "team", label: "Teams", hint: "Players score for a team. Best team total wins." },
   { id: "coop", label: "Co-op", hint: "Everyone wins or loses together." },
 ];
@@ -48,17 +52,24 @@ export function add(g: Game, p: number, delta: number): Game {
 }
 
 export function setCell(g: Game, r: number, p: number, value: number): Game {
-  return { ...g, rounds: g.rounds.map((row, i) => (i === r ? row.map((v, j) => (j === p ? value : v)) : row)) };
+  return {
+    ...g,
+    rounds: g.rounds.map((row, i) => (i === r ? row.map((v, j) => (j === p ? value : v)) : row)),
+  };
 }
 
-export const addRound = (g: Game): Game => ({ ...g, rounds: [...g.rounds, g.players.map(() => 0)] });
+export const addRound = (g: Game): Game => ({
+  ...g,
+  rounds: [...g.rounds, g.players.map(() => 0)],
+});
 
 export const setResult = (g: Game, result: CoopResult): Game => ({ ...g, result });
 
 export const finish = (g: Game, now: number): Game => ({ ...g, endedAt: now });
 
 /** Per-player totals across all rounds. */
-export const totals = (g: Game): number[] => g.players.map((_, p) => g.rounds.reduce((s, row) => s + row[p], 0));
+export const totals = (g: Game): number[] =>
+  g.players.map((_, p) => g.rounds.reduce((s, row) => s + row[p], 0));
 
 /** Scoring entities: teams in team mode, players otherwise (co-op has no ranking). */
 function entities(g: Game): { name: string; total: number; members: number[] }[] {
@@ -92,7 +103,10 @@ export function standings(g: Game): Row[] {
   return rows.map((r, i) => ({
     name: r.name,
     total: r.total,
-    rank: i > 0 && rows[i - 1].total === r.total ? rows.findIndex((x) => x.total === r.total) + 1 : i + 1,
+    rank:
+      i > 0 && rows[i - 1].total === r.total
+        ? rows.findIndex((x) => x.total === r.total) + 1
+        : i + 1,
   }));
 }
 
@@ -101,7 +115,10 @@ export function winners(g: Game): string[] {
   if (g.mode === "coop") return g.result === "won" ? g.players : [];
   const low = lowWins(g.mode);
   const ents = entities(g);
-  const best = ents.reduce((m, e) => (low ? Math.min(m, e.total) : Math.max(m, e.total)), low ? Infinity : -Infinity);
+  const best = ents.reduce(
+    (m, e) => (low ? Math.min(m, e.total) : Math.max(m, e.total)),
+    low ? Infinity : -Infinity
+  );
   return ents.filter((e) => e.total === best).flatMap((e) => e.members.map((p) => g.players[p]));
 }
 
@@ -120,5 +137,7 @@ export function tally(history: Game[]): Tally[] {
       map.set(name, t);
     }
   }
-  return [...map.values()].sort((a, b) => b.wins - a.wins || a.played - b.played || a.name.localeCompare(b.name));
+  return [...map.values()].sort(
+    (a, b) => b.wins - a.wins || a.played - b.played || a.name.localeCompare(b.name)
+  );
 }
