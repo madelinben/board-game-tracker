@@ -9,7 +9,7 @@ Two ways this repo ships, from the same `src/`:
 | Target | How |
 |---|---|
 | **GitHub Pages** (`madelinben.github.io/board-game-score/`) | `pnpm build:demo` builds `demo/` into `docs/` (Pages source: `main` / `/docs`) |
-| **get-out-there** (Cloudflare) | imported as workspace package `@get-out-there/tool-board-games` (`BoardGamesApp`) |
+| **get-out-there** (Cloudflare) | imported as workspace package `@get-out-there/board-games` (`BoardGamesApp`) |
 
 ```bash
 pnpm install

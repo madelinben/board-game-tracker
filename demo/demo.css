@@ -11,3 +11,8 @@ body,
   font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
   -webkit-tap-highlight-color: transparent;
 }
+
+body {
+  background: #f8fafc;
+  color: #0f172a;
+}

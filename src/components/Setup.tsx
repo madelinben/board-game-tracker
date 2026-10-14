@@ -32,7 +32,7 @@ export function Setup({ onStart }: { onStart: (g: Game) => void }) {
           onChange={(e) => setName(e.target.value)}
           maxLength={40}
           placeholder="e.g. Catan, Ticket to Ride"
-          className="min-h-11 rounded-xl border-2 border-slate-200 px-3 text-base font-normal outline-none focus:border-indigo-500"
+          className="min-h-11 rounded-xl border-2 border-slate-200 px-3 text-base font-normal outline-none focus:border-orange-500"
         />
       </label>
 
@@ -46,7 +46,7 @@ export function Setup({ onStart }: { onStart: (g: Game) => void }) {
               aria-pressed={mode === m.id}
               onClick={() => setMode(m.id)}
               className={`min-h-11 rounded-xl px-3 text-sm font-bold transition active:scale-[0.97] ${
-                mode === m.id ? "bg-indigo-600 text-white" : "bg-slate-100 text-slate-700"
+                mode === m.id ? "bg-orange-600 text-white" : "bg-slate-100 text-slate-700"
               }`}
             >
               {m.label}
@@ -66,7 +66,7 @@ export function Setup({ onStart }: { onStart: (g: Game) => void }) {
               aria-label={`Player ${i + 1} name`}
               onFocus={(e) => e.target.select()}
               onChange={(e) => setPlayers((a) => a.map((x, j) => (j === i ? e.target.value : x)))}
-              className="min-h-11 min-w-0 flex-1 rounded-xl border-2 border-slate-200 px-3 text-base outline-none focus:border-indigo-500"
+              className="min-h-11 min-w-0 flex-1 rounded-xl border-2 border-slate-200 px-3 text-base outline-none focus:border-orange-500"
             />
             {mode === "team" && (
               <select
@@ -120,7 +120,7 @@ export function Setup({ onStart }: { onStart: (g: Game) => void }) {
             )
           )
         }
-        className="min-h-14 rounded-2xl bg-indigo-600 text-lg font-extrabold text-white shadow-lg transition active:scale-[0.98] disabled:opacity-40"
+        className="min-h-14 rounded-2xl bg-orange-600 text-lg font-extrabold text-white shadow-lg transition active:scale-[0.98] disabled:opacity-40"
       >
         Start game
       </button>

@@ -35,8 +35,8 @@ export function Play({ game, onChange, onFinish }: PlayProps) {
       {game.mode === "team" && (
         <ul className="grid grid-cols-2 gap-2">
           {standing.map((r) => (
-            <li key={r.name} className="rounded-xl bg-indigo-50 p-3 text-center">
-              <div className="text-xs font-bold uppercase text-indigo-700">{r.name}</div>
+            <li key={r.name} className="rounded-xl bg-orange-50 p-3 text-center">
+              <div className="text-xs font-bold uppercase text-orange-700">{r.name}</div>
               <div className="text-2xl font-black tabular-nums">{r.total}</div>
             </li>
           ))}

@@ -18,7 +18,7 @@ export function ScorePad({ game, onChange }: { game: Game; onChange: (g: Game) =
           <li key={name + p} className="rounded-2xl bg-white p-3 shadow-sm ring-1 ring-slate-200">
             <div className="flex items-baseline justify-between">
               <span className="font-bold text-slate-900">{name}</span>
-              <span className="text-3xl font-black tabular-nums text-indigo-700">{t[p]}</span>
+              <span className="text-3xl font-black tabular-nums text-orange-700">{t[p]}</span>
             </div>
             <div className="mt-2 flex flex-wrap items-center gap-1.5">
               {STEPS.map((s) => (
@@ -36,7 +36,7 @@ export function ScorePad({ game, onChange }: { game: Game; onChange: (g: Game) =
                     type="button"
                     aria-label={`${name} plus ${s}`}
                     onClick={() => onChange(add(game, p, s))}
-                    className="flex min-h-11 min-w-11 items-center justify-center rounded-xl bg-indigo-100 text-sm font-bold text-indigo-800 active:scale-[0.97]"
+                    className="flex min-h-11 min-w-11 items-center justify-center rounded-xl bg-orange-100 text-sm font-bold text-orange-800 active:scale-[0.97]"
                   >
                     <Plus size={12} />
                     {s}
