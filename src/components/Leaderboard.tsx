@@ -21,12 +21,12 @@ export function Leaderboard({ history, onClear }: { history: Game[]; onClear: ()
             key={r.name}
             className="flex items-center gap-3 rounded-2xl bg-white p-3 shadow-sm ring-1 ring-slate-200"
           >
-            <span className="grid size-8 place-items-center rounded-full bg-orange-100 font-black text-orange-800">
+            <span className="grid size-8 place-items-center rounded-full bg-indigo-100 font-black text-indigo-800">
               {i === 0 ? <Trophy size={16} /> : i + 1}
             </span>
             <span className="flex-1 font-bold">{r.name}</span>
             <span className="text-sm text-slate-500">{r.played} played</span>
-            <span className="w-14 text-right text-xl font-black tabular-nums text-orange-700">
+            <span className="w-14 text-right text-xl font-black tabular-nums text-indigo-700">
               {r.wins}
             </span>
           </li>

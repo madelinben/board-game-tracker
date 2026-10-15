@@ -67,7 +67,7 @@ export function BoardGamesApp() {
             aria-current={tab === id}
             onClick={() => setTab(id)}
             className={`flex min-h-12 items-center justify-center gap-2 rounded-xl text-sm font-extrabold transition active:scale-[0.97] ${
-              tab === id ? "bg-orange-600 text-white" : "text-slate-600"
+              tab === id ? "bg-indigo-600 text-white" : "text-slate-600"
             }`}
           >
             <Icon size={18} />

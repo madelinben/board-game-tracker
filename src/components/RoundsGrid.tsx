@@ -41,7 +41,7 @@ export function RoundsGrid({ game, onChange }: { game: Game; onChange: (g: Game)
             <tr className="border-t-2 border-slate-200 bg-slate-50">
               <th className="p-2 text-left text-sm">Total</th>
               {t.map((v, p) => (
-                <td key={p} className="p-2 text-xl font-black tabular-nums text-orange-700">
+                <td key={p} className="p-2 text-xl font-black tabular-nums text-indigo-700">
                   {v}
                 </td>
               ))}
