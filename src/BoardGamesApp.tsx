@@ -23,7 +23,9 @@ interface Backup {
 const parseBackup = (raw: unknown): Backup | null => {
   if (typeof raw !== "object" || raw === null) return null;
   const d = raw as Partial<Backup>;
-  return d.version === 1 && Array.isArray(d.history) ? { version: 1, history: d.history, karaoke: d.karaoke ?? [] } : null;
+  return d.version === 1 && Array.isArray(d.history)
+    ? { version: 1, history: d.history, karaoke: d.karaoke ?? [] }
+    : null;
 };
 
 const TABS = [
@@ -103,7 +105,10 @@ export function BoardGamesApp({ beforeExport }: { beforeExport?: BeforeExport })
         )}
         {tab === "karaoke" && <Karaoke songs={songs} onChange={updateSongs} />}
       </div>
-      <nav aria-label="Board Game Tracker" className="grid grid-cols-3 gap-1 border-t border-slate-200 bg-white p-1.5">
+      <nav
+        aria-label="Board Game Tracker"
+        className="grid grid-cols-3 gap-1 border-t border-slate-200 bg-white p-1.5"
+      >
         {TABS.map(({ id, label, Icon }) => (
           <button
             key={id}

@@ -22,7 +22,9 @@ export function queue(songs: readonly Song[]): Song[] {
     turn.set(s.id, n);
     seen.set(key, n + 1);
   }
-  return byTime.filter((s) => !s.done).sort((a, b) => (turn.get(a.id) ?? 0) - (turn.get(b.id) ?? 0) || a.addedAt - b.addedAt);
+  return byTime
+    .filter((s) => !s.done)
+    .sort((a, b) => (turn.get(a.id) ?? 0) - (turn.get(b.id) ?? 0) || a.addedAt - b.addedAt);
 }
 
 /** Best scored performances, highest first */
