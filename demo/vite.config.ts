@@ -5,7 +5,7 @@ import { defineConfig } from "vite";
 // Standalone GitHub Pages build: output lands in docs/ (Pages source = main /docs).
 export default defineConfig({
   root: import.meta.dirname,
-  base: "/board-game-score/",
+  base: "/board-game-tracker/",
   plugins: [react(), tailwindcss()],
   server: { port: 3102 },
   build: { outDir: "../docs", emptyOutDir: true },

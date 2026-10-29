@@ -8,12 +8,12 @@ Two ways this repo ships, from the same `src/`:
 
 | Target | How |
 |---|---|
-| **GitHub Pages** (`madelinben.github.io/board-game-score/`) | `pnpm build:demo` builds `demo/` into `docs/` (Pages source: `main` / `/docs`) |
+| **GitHub Pages** (`madelinben.github.io/board-game-tracker/`) | `pnpm build:demo` builds `demo/` into `docs/` (Pages source: `main` / `/docs`) |
 | **get-out-there** (Cloudflare) | imported as workspace package `@get-out-there/board-games` (`BoardGamesApp`) |
 
 ```bash
 pnpm install
-pnpm dev          # demo at http://localhost:3102/board-game-score/
+pnpm dev          # demo at http://localhost:3102/board-game-tracker/
 pnpm test         # scoring logic unit tests
 pnpm build:demo   # static site -> docs/
 ```
