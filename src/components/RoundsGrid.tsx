@@ -1,5 +1,5 @@
 import { Plus } from "lucide-react";
-import { addRound, type Game, setCell, totals } from "../lib/game";
+import { addRound, type Game, setCell, setJoker, totals } from "../lib/game";
 
 export function RoundsGrid({ game, onChange }: { game: Game; onChange: (g: Game) => void }) {
   const t = totals(game);
@@ -38,6 +38,28 @@ export function RoundsGrid({ game, onChange }: { game: Game; onChange: (g: Game)
             ))}
           </tbody>
           <tfoot>
+            {game.mode === "quiz" && (
+              <tr className="border-t border-slate-100">
+                <th className="p-2 text-left text-sm">Joker</th>
+                {game.players.map((name, p) => (
+                  <td key={name + p} className="p-1">
+                    <select
+                      aria-label={`${name} joker round (doubles that round)`}
+                      value={game.jokers?.[p] ?? -1}
+                      onChange={(e) => onChange(setJoker(game, p, Number(e.target.value)))}
+                      className="min-h-11 w-full rounded-lg border border-slate-200 bg-white text-sm"
+                    >
+                      <option value={-1}>None</option>
+                      {game.rounds.map((_, r) => (
+                        <option key={r} value={r}>
+                          Round {r + 1} ×2
+                        </option>
+                      ))}
+                    </select>
+                  </td>
+                ))}
+              </tr>
+            )}
             <tr className="border-t-2 border-slate-200 bg-slate-50">
               <th className="p-2 text-left text-sm">Total</th>
               {t.map((v, p) => (

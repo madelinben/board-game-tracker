@@ -13,3 +13,15 @@ export function save(key: string, value: unknown): void {
     localStorage.setItem(key, JSON.stringify(value));
   } catch {}
 }
+
+/** Host hook run before a download or restore, e.g. an ad gate. Rejects to cancel. */
+export type BeforeExport = (label: string) => Promise<void>;
+
+export function downloadJson(filename: string, data: unknown): void {
+  const url = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: "application/json" }));
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+}

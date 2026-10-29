@@ -1,8 +1,10 @@
 # Board Game Score
 
-Track scores for any board game and keep a running leaderboard.
+Track scores for any board game, quiz night or karaoke, and keep a running leaderboard.
 
-Scoring modes: **highest wins**, **lowest wins**, **round by round** table, **teams**, **co-op** (win/lose together). Data stays in the browser (localStorage).
+- Scoring modes: **highest wins**, **lowest wins**, **round by round** table, **quiz night** (up to 20 teams, one joker each to double a round), **teams**, **co-op** (win/lose together)
+- **Karaoke**: queue songs, fair singer rotation (nobody sings twice until everyone queued has sung), optional room score out of 10, best performances
+- Data stays in the browser (localStorage). Download a backup file and restore it on any device; `<BoardGamesApp beforeExport={gate} />` runs a host hook (e.g. an ad gate) first.
 
 Two ways this repo ships, from the same `src/`:
 

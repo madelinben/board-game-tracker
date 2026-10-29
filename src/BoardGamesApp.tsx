@@ -1,30 +1,49 @@
-import { ListOrdered, Swords } from "lucide-react";
+import { ListOrdered, Mic, Swords } from "lucide-react";
 import { useEffect, useState } from "react";
+import { DataBackup } from "./components/DataBackup";
+import { Karaoke } from "./components/Karaoke";
 import { Leaderboard } from "./components/Leaderboard";
 import { Play } from "./components/Play";
 import { Setup } from "./components/Setup";
 import type { Game } from "./lib/game";
-import { load, save } from "./lib/storage";
+import type { Song } from "./lib/karaoke";
+import { type BeforeExport, load, save } from "./lib/storage";
 
 const CURRENT_KEY = "bgs-current";
 const HISTORY_KEY = "bgs-history";
-type Tab = "play" | "leaderboard";
+const KARAOKE_KEY = "bgs-karaoke";
+type Tab = "play" | "leaderboard" | "karaoke";
+
+interface Backup {
+  version: 1;
+  history: Game[];
+  karaoke: Song[];
+}
+
+const parseBackup = (raw: unknown): Backup | null => {
+  if (typeof raw !== "object" || raw === null) return null;
+  const d = raw as Partial<Backup>;
+  return d.version === 1 && Array.isArray(d.history) ? { version: 1, history: d.history, karaoke: d.karaoke ?? [] } : null;
+};
 
 const TABS = [
   { id: "play", label: "Game", Icon: Swords },
   { id: "leaderboard", label: "Leaderboard", Icon: ListOrdered },
+  { id: "karaoke", label: "Karaoke", Icon: Mic },
 ] as const;
 
-export function BoardGamesApp() {
+export function BoardGamesApp({ beforeExport }: { beforeExport?: BeforeExport }) {
   const [tab, setTab] = useState<Tab>("play");
   const [game, setGame] = useState<Game | null>(null);
   const [history, setHistory] = useState<Game[]>([]);
+  const [songs, setSongs] = useState<Song[]>([]);
   const [ready, setReady] = useState(false);
 
   // Load after mount: localStorage is unavailable during SSR and would cause a hydration mismatch.
   useEffect(() => {
     setGame(load<Game | null>(CURRENT_KEY, null));
     setHistory(load<Game[]>(HISTORY_KEY, []));
+    setSongs(load<Song[]>(KARAOKE_KEY, []));
     setReady(true);
   }, []);
 
@@ -39,6 +58,17 @@ export function BoardGamesApp() {
     save(HISTORY_KEY, next);
     update(null);
     setTab("leaderboard");
+  };
+
+  const updateSongs = (next: Song[]) => {
+    setSongs(next);
+    save(KARAOKE_KEY, next);
+  };
+
+  const restore = (b: Backup) => {
+    setHistory(b.history);
+    save(HISTORY_KEY, b.history);
+    updateSongs(b.karaoke);
   };
 
   const clear = () => {
@@ -57,9 +87,23 @@ export function BoardGamesApp() {
           ) : (
             <Setup onStart={update} />
           ))}
-        {tab === "leaderboard" && <Leaderboard history={history} onClear={clear} />}
+        {tab === "leaderboard" && (
+          <>
+            <Leaderboard history={history} onClear={clear} />
+            <div className="mx-auto max-w-xl px-4 pb-4">
+              <DataBackup
+                filename="board-game-tracker.json"
+                data={{ version: 1, history, karaoke: songs }}
+                parse={parseBackup}
+                onRestore={restore}
+                beforeExport={beforeExport}
+              />
+            </div>
+          </>
+        )}
+        {tab === "karaoke" && <Karaoke songs={songs} onChange={updateSongs} />}
       </div>
-      <nav className="grid grid-cols-2 gap-1 border-t border-slate-200 bg-white p-1.5">
+      <nav aria-label="Board Game Tracker" className="grid grid-cols-3 gap-1 border-t border-slate-200 bg-white p-1.5">
         {TABS.map(({ id, label, Icon }) => (
           <button
             key={id}
