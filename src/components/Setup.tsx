@@ -3,8 +3,6 @@ import { useState } from "react";
 import { type Game, MODES, type Mode, newGame, TEAM_NAMES } from "../lib/game";
 
 const MAX_PLAYERS = 8;
-// pub quizzes get busy
-const MAX_QUIZ_TEAMS = 20;
 
 export function Setup({ onStart }: { onStart: (g: Game) => void }) {
   const [name, setName] = useState("");
@@ -15,8 +13,7 @@ export function Setup({ onStart }: { onStart: (g: Game) => void }) {
   const minPlayers = mode === "coop" ? 1 : 2;
   const valid = players.length >= minPlayers && players.every((p) => p.trim());
   const hint = MODES.find((m) => m.id === mode)?.hint;
-  const quiz = mode === "quiz";
-  const noun = quiz ? "Team" : "Player";
+  const noun = "Player";
 
   const addPlayer = () => {
     setPlayers((p) => [...p, `${noun} ${p.length + 1}`]);
@@ -35,7 +32,7 @@ export function Setup({ onStart }: { onStart: (g: Game) => void }) {
           value={name}
           onChange={(e) => setName(e.target.value)}
           maxLength={40}
-          placeholder="e.g. Catan, Ticket to Ride, Friday quiz"
+          placeholder="e.g. Catan, Ticket to Ride, Scrabble"
           className="min-h-11 rounded-xl border-2 border-slate-200 px-3 text-base font-normal outline-none focus:border-indigo-500"
         />
       </label>
@@ -100,7 +97,7 @@ export function Setup({ onStart }: { onStart: (g: Game) => void }) {
             )}
           </div>
         ))}
-        {players.length < (quiz ? MAX_QUIZ_TEAMS : MAX_PLAYERS) && (
+        {players.length < MAX_PLAYERS && (
           <button
             type="button"
             onClick={addPlayer}

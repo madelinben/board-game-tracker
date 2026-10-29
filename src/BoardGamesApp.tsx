@@ -5,7 +5,7 @@ import { Karaoke } from "./components/Karaoke";
 import { Leaderboard } from "./components/Leaderboard";
 import { Play } from "./components/Play";
 import { Setup } from "./components/Setup";
-import type { Game } from "./lib/game";
+import { type Game, knownMode } from "./lib/game";
 import type { Song } from "./lib/karaoke";
 import { type BeforeExport, load, save } from "./lib/storage";
 
@@ -24,7 +24,7 @@ const parseBackup = (raw: unknown): Backup | null => {
   if (typeof raw !== "object" || raw === null) return null;
   const d = raw as Partial<Backup>;
   return d.version === 1 && Array.isArray(d.history)
-    ? { version: 1, history: d.history, karaoke: d.karaoke ?? [] }
+    ? { version: 1, history: d.history.map(knownMode), karaoke: d.karaoke ?? [] }
     : null;
 };
 
@@ -43,8 +43,9 @@ export function BoardGamesApp({ beforeExport }: { beforeExport?: BeforeExport })
 
   // Load after mount: localStorage is unavailable during SSR and would cause a hydration mismatch.
   useEffect(() => {
-    setGame(load<Game | null>(CURRENT_KEY, null));
-    setHistory(load<Game[]>(HISTORY_KEY, []));
+    const current = load<Game | null>(CURRENT_KEY, null);
+    setGame(current && knownMode(current));
+    setHistory(load<Game[]>(HISTORY_KEY, []).map(knownMode));
     setSongs(load<Song[]>(KARAOKE_KEY, []));
     setReady(true);
   }, []);

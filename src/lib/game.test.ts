@@ -4,9 +4,10 @@ import {
   add,
   addRound,
   finish,
+  type Game,
+  knownMode,
   newGame,
   setCell,
-  setJoker,
   setResult,
   standings,
   tally,
@@ -79,10 +80,10 @@ test("tally counts only finished games, wins first", () => {
   );
 });
 
-test("quiz: a joker doubles one round", () => {
-  let g = newGame("Quiz", "quiz", ["Quizzly Bears", "Les Quizerables"]);
-  g = setCell(addRound(setCell(g, 0, 0, 8)), 1, 1, 6);
-  g = setCell(g, 0, 1, 7);
-  assert.deepEqual(totals(setJoker(g, 1, 1)), [8, 19]);
-  assert.deepEqual(winners(setJoker(g, 1, 1)), ["Les Quizerables"]);
+test("games saved as the retired quiz mode load as round by round", () => {
+  // As read back from localStorage
+  const old: Game = JSON.parse(
+    JSON.stringify({ ...newGame("Quiz", "rounds", ["A"]), mode: "quiz" })
+  );
+  assert.equal(knownMode(old).mode, "rounds");
 });

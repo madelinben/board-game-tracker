@@ -1,5 +1,5 @@
 // Pure board-game scoring logic. One Game = one session; history of finished games feeds the leaderboard.
-export type Mode = "highest" | "lowest" | "rounds" | "quiz" | "coop" | "team";
+export type Mode = "highest" | "lowest" | "rounds" | "coop" | "team";
 export type CoopResult = "won" | "lost" | null;
 
 export const MODES: { id: Mode; label: string; hint: string }[] = [
@@ -9,11 +9,6 @@ export const MODES: { id: Mode; label: string; hint: string }[] = [
     id: "rounds",
     label: "Round by round",
     hint: "Score table, one row per round. Most points wins.",
-  },
-  {
-    id: "quiz",
-    label: "Quiz night",
-    hint: "Teams score each round. Each team can play a joker to double one round.",
   },
   { id: "team", label: "Teams", hint: "Players score for a team. Best team total wins." },
   { id: "coop", label: "Co-op", hint: "Everyone wins or loses together." },
@@ -28,9 +23,11 @@ export type Game = {
   rounds: number[][]; // rounds[r][p]; running-total modes keep a single round
   result: CoopResult;
   endedAt: number | null;
-  /** Quiz: round index each team doubled, -1 for none */
-  jokers?: number[];
 };
+
+/** Games saved under a retired mode (quiz night moved to Quiz Tracker) score as round by round */
+export const knownMode = (g: Game): Game =>
+  MODES.some((m) => m.id === g.mode) ? g : { ...g, mode: "rounds" };
 
 export type Row = { name: string; total: number; rank: number };
 
@@ -50,14 +47,8 @@ export function newGame(name: string, mode: Mode, players: string[], teams: numb
     rounds: [players.map(() => 0)],
     result: null,
     endedAt: null,
-    jokers: mode === "quiz" ? players.map(() => -1) : undefined,
   };
 }
-
-export const setJoker = (g: Game, p: number, round: number): Game => ({
-  ...g,
-  jokers: g.players.map((_, i) => (i === p ? round : (g.jokers?.[i] ?? -1))),
-});
 
 /** Add points to a player in the running total (single round). */
 export function add(g: Game, p: number, delta: number): Game {
@@ -82,9 +73,7 @@ export const finish = (g: Game, now: number): Game => ({ ...g, endedAt: now });
 
 /** Per-player totals across all rounds. */
 export const totals = (g: Game): number[] =>
-  g.players.map((_, p) =>
-    g.rounds.reduce((s, row, r) => s + row[p] * (g.jokers?.[p] === r ? 2 : 1), 0)
-  );
+  g.players.map((_, p) => g.rounds.reduce((s, row) => s + row[p], 0));
 
 /** Scoring entities: teams in team mode, players otherwise (co-op has no ranking). */
 function entities(g: Game): { name: string; total: number; members: number[] }[] {
@@ -93,7 +82,6 @@ function entities(g: Game): { name: string; total: number; members: number[] }[]
     case "highest":
     case "lowest":
     case "rounds":
-    case "quiz":
       return g.players.map((name, p) => ({ name, total: t[p], members: [p] }));
     case "team": {
       const ids = [...new Set(g.teams)].sort();

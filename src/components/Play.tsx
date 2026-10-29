@@ -17,7 +17,6 @@ function Entry({ game, onChange }: Pick<PlayProps, "game" | "onChange">) {
     case "team":
       return <ScorePad game={game} onChange={onChange} />;
     case "rounds":
-    case "quiz":
       return <RoundsGrid game={game} onChange={onChange} />;
     case "coop":
       return <CoopResult game={game} onChange={onChange} />;

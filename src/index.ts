@@ -4,5 +4,5 @@ export const meta = {
   id: "board-games",
   title: "Board Game Tracker",
   description:
-    "Score any board game, quiz night or karaoke: points, rounds, teams, co-op and jokers, with a running leaderboard",
+    "Score any board game or karaoke night: points, rounds, teams and co-op, with a running leaderboard",
 } as const;
